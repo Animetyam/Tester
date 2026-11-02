@@ -1,0 +1,23 @@
+
+stages:
+  - collect
+
+collect_system_info:
+  stage: collect
+  script:
+    - |
+      . /etc/os-release
+      {
+        echo "Hostname: $(hostname)"
+        echo "IP: $(hostname -I)"
+        echo "OS: $PRETTY_NAME"
+      } > system-info.txt
+
+      cat system-info.txt
+
+  artifacts:
+    name: "system-info-$CI_PIPELINE_ID"
+    paths:
+      - system-info.txt
+    expire_in: 30 days
+    when: always
